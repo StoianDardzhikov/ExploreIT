@@ -3,7 +3,7 @@
     "username": "foemaco_exploreit",
     "password": "!-exp1oreIt-!",
     "database": "foemaco_exploreit",
-    "host": "localhost",
+    "host": "server26.rdb.superhosting.bg",
     "dialect": "mysql"
   },
   "test": {

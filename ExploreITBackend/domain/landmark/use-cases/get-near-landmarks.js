@@ -19,20 +19,15 @@ function findAllLandmarksInRadius(landmarks, lat, lon, searchRadius) {
   return landmarksInRadius;
 }
 
-async function convertToLandmarks(landmarks, calculateRatingForLandmark) {
+async function convertToLandmarks(landmarks) {
   let landmarksObjects = [];
-
+  if (!landmarks) throw new Error("Няма намерени близки забележителности");
   for (i = 0; i < landmarks.length; i++) {
-    var { rating } = await calculateRatingForLandmark(landmarks[i].id);
     const landmarkObj = {
       id: landmarks[i].id,
       name: landmarks[i].name,
-      description: landmarks[i].description,
-      image: landmarks[i].image,
       lat: landmarks[i].lat,
       lon: landmarks[i].lon,
-      visits: landmarks[i].visits,
-      rating: rating,
     };
     landmarksObjects.push(landmarkObj);
   }
@@ -40,32 +35,11 @@ async function convertToLandmarks(landmarks, calculateRatingForLandmark) {
   return landmarksObjects;
 }
 
-function sortByDistance(landmarks, lat, lon) {
-  let nearestLandmarksPair = [];
-
-  landmarks.forEach((landmark) => {
-    c = Math.sqrt(
-      Math.pow(lat - landmark.lat, 2) + Math.pow(lon - landmark.lon, 2)
-    );
-
-    nearestLandmarksPair.push({ dist: c, landmark: landmark });
-  });
-
-  nearestLandmarksPair.sort((a, b) => a.dist - b.dist);
-
-  let nearestLandmarks = [];
-  nearestLandmarksPair.forEach((pair) => {
-    nearestLandmarks.push(pair.landmark);
-  });
-  return nearestLandmarks;
-}
-
 module.exports = function makeGetNearLandmarks(Landmark) {
   return async function getNearLandmarks(
     lat,
     lon,
     searchRadius,
-    calculateRatingForLandmark
   ) {
     const landmarks = await Landmark.findAll();
 
@@ -75,12 +49,8 @@ module.exports = function makeGetNearLandmarks(Landmark) {
       lon,
       searchRadius
     );
-    const nearestLandmarks = sortByDistance(landmarksInRadius, lat, lon);
 
-    const landmarksObj = await convertToLandmarks(
-      nearestLandmarks,
-      calculateRatingForLandmark
-    );
+    const landmarksObj = await convertToLandmarks(landmarksInRadius);
     return landmarksObj.slice(0, 5);
   };
 };

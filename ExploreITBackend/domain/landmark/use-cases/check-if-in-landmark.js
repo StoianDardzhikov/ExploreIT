@@ -1,16 +1,10 @@
-const KM_TO_LAT = 0.00904371732;
-const KM_TO_LON = (lat) => {
-  return 0.00898311174 * Math.cos(lat);
-};
-
 module.exports = function makeCheckIfInLandmark() {
   return function checkIfInLandmark(lat, lon, landmark) {
-    if (
-      !(
-        Math.abs(lat - landmark.lat) > Math.abs(0.1 * KM_TO_LAT) ||
-        Math.abs(lon - landmark.lon) > Math.abs(0.1 * KM_TO_LON(lat))
-      )
-    ) {
+
+    //Използваме сферичен закон на косинусите да намерим дължината между забележителността и нашата позиция
+    const φ1 = lat * Math.PI / 180, φ2 = landmark.lat * Math.PI / 180, Δλ = (landmark.lon - lon) * Math.PI / 180, R = 6371e3;
+    const d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R;
+    if (d <= 100) {
       return true;
     }
     return false;

@@ -8,6 +8,6 @@ module.exports = function makeCalculateRatingForLandmark(Rating) {
       avg /= ratings.length;
     }
 
-    return { rating: avg, ratingsCount: ratings.length };
+    return { rating: avg.toFixed(1), ratingsCount: ratings.length };
   };
 };

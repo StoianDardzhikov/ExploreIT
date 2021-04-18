@@ -11,8 +11,8 @@ module.exports = function makeGetLandmarkById(Landmark, makeLandmark) {
       name: landmark.getName(),
       description: landmark.getDescription(),
       image: landmarkEntity.image,
-      lat: landmark.lat,
-      lon: landmark.lon,
+      lat: landmark.getCoordinates().lat,
+      lon: landmark.getCoordinates().lon,
       visits: landmark.getVisits(),
     };
   };

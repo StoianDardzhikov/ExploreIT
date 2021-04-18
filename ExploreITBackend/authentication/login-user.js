@@ -24,7 +24,7 @@ module.exports = function makeLoginUser(loginUser, signToken) {
         headers: {
           "Content-Type": "application/json",
         },
-        statusCode: 400,
+        statusCode: err.message == "Невалидни данни" ? 450 : 400,
         body: {
           error: err.message,
         },

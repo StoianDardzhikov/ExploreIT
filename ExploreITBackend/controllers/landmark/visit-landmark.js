@@ -11,6 +11,7 @@ module.exports = function makeVisitLandmark(
       const { lat, lon, searchRadius, visitDate } = httpRequest.body;
 
       const landmarksInRadius = await getNearLandmarks(lat, lon, searchRadius);
+      if (landmarksInRadius.length == 0) throw new Error("Не се намирате в забележителност");
       const landmark = landmarksInRadius[0];
       const isIn = checkIfInLandmark(lat, lon, landmark);
       let visit;
@@ -25,11 +26,7 @@ module.exports = function makeVisitLandmark(
         },
         statusCode: 201,
         body: {
-          visit: {
-            userId: visit.getUserId(),
-            landmarkId: visit.getLandmarkId(),
-            visitDate: visit.getVisitDate(),
-          },
+          name: landmark.name,
         },
       };
     } catch (err) {

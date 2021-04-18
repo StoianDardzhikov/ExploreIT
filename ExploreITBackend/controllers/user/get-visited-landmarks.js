@@ -12,7 +12,7 @@ module.exports = function makeGetVisitedLandmarks(
           "Content-Type": "application/json",
         },
         statusCode: 201,
-        body: { visits: visitedLandmarks },
+        body: { username: user.username, visits: visitedLandmarks },
       };
     } catch (err) {
       console.log(err);

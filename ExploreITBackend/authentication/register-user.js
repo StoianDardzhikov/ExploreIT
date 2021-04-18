@@ -2,8 +2,6 @@ require("dotenv").config();
 
 module.exports = function makeRegisterUser(registerUser, signToken) {
   return async function RegisterUser(httpRequest) {
-    console.log("------------");
-    console.log(httpRequest.body);
     try {
       const { ...userInfo } = httpRequest.body;
       const result = await registerUser(userInfo);
@@ -26,7 +24,7 @@ module.exports = function makeRegisterUser(registerUser, signToken) {
         headers: {
           "Content-Type": "application/json",
         },
-        statusCode: 400,
+        statusCode: err.message == "Вече съществува потребител с това име" ? 450 : 400,
         body: {
           error: err.message,
         },

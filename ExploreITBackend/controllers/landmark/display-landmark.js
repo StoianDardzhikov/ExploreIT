@@ -14,7 +14,7 @@ module.exports = function makeDisplayLandmark(
       );
       const user = await getUserByName(httpRequest.user.username);
       const isRated = await checkIfLandmarkIsRated(user.id, landmarkId);
-
+      console.log(landmark);
       return {
         headers: {
           "Content-Type": "application/json",

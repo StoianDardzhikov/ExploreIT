@@ -1,20 +1,17 @@
-module.exports = function makeRateLandmark(addRating, getUserByName) {
+module.exports = function makeRateLandmark(addRating, getUserByName, calculateRatingForLandmark) {
   return async function RateLandmark(httpRequest) {
     try {
       const { ratingValue, landmarkId } = httpRequest.body;
       const user = await getUserByName(httpRequest.user.username);
-      const rating = await addRating(user.id, landmarkId, ratingValue);
+      await addRating(user.id, landmarkId, ratingValue);
+      const { rating } = await calculateRatingForLandmark(landmarkId);
       return {
         headers: {
           "Content-Type": "application/json",
         },
         statusCode: 201,
         body: {
-          rating: {
-            userId: rating.getUserId(),
-            landmarkId: rating.getLandmarkId(),
-            ratingValue: rating.getRatingValue(),
-          },
+          rating: rating,
         },
       };
     } catch (err) {

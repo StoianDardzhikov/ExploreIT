@@ -45,6 +45,7 @@ module.exports = function makeGetVisitedLandmarks(Visit) {
         day: dateStrs[2],
       };
       visits.push({
+        id: visitsEntities[i].id,
         landmarkName: landmark.name,
         visitDate: date,
       });

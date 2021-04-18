@@ -10,11 +10,6 @@ router.post(
   makeCallback(landmarkController.addLandmark)
 );
 router.post(
-  "/near",
-  authenticateToken,
-  makeCallback(landmarkController.getNearLandmarks)
-);
-router.post(
   "/visit",
   authenticateToken,
   makeCallback(landmarkController.visitLandmark)
@@ -29,6 +24,12 @@ router.post(
   "/rate",
   authenticateToken,
   makeCallback(landmarkController.rateLandmark)
+);
+
+router.get(
+  "/list",
+  authenticateToken,
+  makeCallback(landmarkController.getListedLandmarks)
 );
 
 router.get(

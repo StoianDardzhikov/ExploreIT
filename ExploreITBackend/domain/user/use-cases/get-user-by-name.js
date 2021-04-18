@@ -5,7 +5,7 @@ module.exports = function makeGetUserByName(User) {
         username: username,
       },
     });
-    console.log(userEntity.id);
+
     if (!userEntity) throw new Error("Потребителя не е намерен");
     else return userEntity;
   };
