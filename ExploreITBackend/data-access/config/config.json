@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "foemaco_exploreit",
-    "password": "!-exp1oreIt-!",
-    "database": "foemaco_exploreit",
-    "host": "server26.rdb.superhosting.bg",
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
     "dialect": "mysql"
   },
   "test": {
@@ -14,9 +14,9 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "foemaco_exploreit",
-    "password": "!-exp1oreIt-!",
-    "database": "foemaco_exploreit",
+    "username": "",
+    "password": "",
+    "database": "",
     "host": "localhost",
     "dialect": "mysql"
   }

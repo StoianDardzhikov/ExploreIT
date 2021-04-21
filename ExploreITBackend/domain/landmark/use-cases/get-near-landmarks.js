@@ -12,7 +12,9 @@ function findAllLandmarksInRadius(landmarks, lat, lon, searchRadius) {
         Math.abs(lon - landmark.lon) > Math.abs(searchRadius * KM_TO_LON(lat))
       )
     ) {
-      landmarksInRadius.push(landmark);
+      const φ1 = lat * Math.PI / 180, φ2 = landmark.lat * Math.PI / 180, Δλ = (landmark.lon - lon) * Math.PI / 180, R = 6371e3;
+      const d = Math.acos(Math.sin(φ1) * Math.sin(φ2) + Math.cos(φ1) * Math.cos(φ2) * Math.cos(Δλ)) * R;
+      landmarksInRadius.push({ landmark: landmark, d: d });
     }
   });
 
@@ -21,13 +23,18 @@ function findAllLandmarksInRadius(landmarks, lat, lon, searchRadius) {
 
 async function convertToLandmarks(landmarks) {
   let landmarksObjects = [];
+
+  landmarks.sort(function (a, b) {
+    return a.d - b.d;
+  });
+
   if (!landmarks) throw new Error("Няма намерени близки забележителности");
   for (i = 0; i < landmarks.length; i++) {
     const landmarkObj = {
-      id: landmarks[i].id,
-      name: landmarks[i].name,
-      lat: landmarks[i].lat,
-      lon: landmarks[i].lon,
+      id: landmarks[i].landmark.id,
+      name: landmarks[i].landmark.name,
+      lat: landmarks[i].landmark.lat,
+      lon: landmarks[i].landmark.lon,
     };
     landmarksObjects.push(landmarkObj);
   }
