@@ -27,7 +27,7 @@ const Stack = createStackNavigator();
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, AppState} from 'react-native';
 import {
   immersiveModeOn,
   immersiveModeOff,
@@ -69,7 +69,14 @@ function App({navigation}) {
     };
 
     bootstrapAsync();
+    AppState.addEventListener('change', handleAppStateChange);
   }, []);
+
+  const handleAppStateChange = nextAppState => {
+    if (nextAppState == 'active') {
+      immersiveModeOn();
+    }
+  };
 
   const authContext = React.useMemo(
     () => ({
@@ -92,6 +99,10 @@ function App({navigation}) {
             {type: 'SIGN_IN', token: json.accessToken},
             await AsyncStorage.setItem('@ACCESS_TOKEN', json.accessToken),
           );
+        }
+        if (response.status) {
+          console.log(response.status);
+          return response.status;
         }
       },
       signOut: async () => {
@@ -123,6 +134,9 @@ function App({navigation}) {
             await AsyncStorage.setItem('@ACCESS_TOKEN', json.accessToken),
           );
         }
+        if (response.status) {
+          return response.status;
+        }
       },
     }),
     [],
@@ -140,9 +154,10 @@ function App({navigation}) {
           tabBarOptions={{
             activeTintColor: '#C44242',
             inactiveTintColor: 'darkgray',
+            height: 10 * vh,
             tabStyle: {
               backgroundColor: 'white',
-              height: '200%',
+              height: 10 * vh,
             },
             showIcon: true,
           }}>
@@ -155,7 +170,7 @@ function App({navigation}) {
                   title: '',
                   tabBarIcon: ({color}) => {
                     return (
-                      <Icon name="map-marked-alt" size={50} color={color} />
+                      <Icon name="map-marked-alt" size={4 * vh} color={color} />
                     );
                   },
                 }}
@@ -166,7 +181,7 @@ function App({navigation}) {
                 options={{
                   title: '',
                   tabBarIcon: ({color}) => {
-                    return <Icon name="user" size={50} color={color} />;
+                    return <Icon name="user" size={4 * vh} color={color} />;
                   },
                 }}
               />
@@ -176,7 +191,7 @@ function App({navigation}) {
                 options={{
                   title: '',
                   tabBarIcon: ({color}) => {
-                    return <Icon name="landmark" size={50} color={color} />;
+                    return <Icon name="landmark" size={4 * vh} color={color} />;
                   },
                 }}
               />

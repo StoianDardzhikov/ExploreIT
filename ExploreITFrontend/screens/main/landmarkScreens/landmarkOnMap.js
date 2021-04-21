@@ -144,12 +144,8 @@ export const LandmarkOnMap = ({route}) => {
     ],
   };
 
-  const setDirectionModeFromChildren = mode => {
-    setDirectionMode(mode);
-  };
-
   if (isLoading) {
-    return <Loading />;
+    return <Loading action="Търсим най-краткия път до там..." />;
   }
 
   return (
@@ -190,7 +186,7 @@ export const LandmarkOnMap = ({route}) => {
           }}
           apikey={'AIzaSyB5yfS5khTJ_zN9fW6l7xndqHPU1X4RuGI'}
           strokeWidth={3}
-          strokeColor="#07AC7A"
+          strokeColor="#C44242"
           mode={directionMode}
         />
       </MapView>

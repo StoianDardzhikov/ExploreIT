@@ -7,7 +7,7 @@
  */
 
 import React, {useState} from 'react';
-
+import {Loading} from '../loading';
 import {
   StyleSheet,
   Text,
@@ -23,7 +23,7 @@ export const LoginSignUp = ({navigation}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../../android/resources/backgrounds/background.png')}
+        source={require('../../android/resources/background.png')}
         style={styles.backgroundImage}>
         <Image
           source={require('../../android/resources/logo.png')}
@@ -54,35 +54,41 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    marginTop: 10 * vh,
-    width: 33 * vh,
-    height: 33 * vh,
+    marginTop: 25 * vh,
+    width: 45 * vh,
+    height: 30 * vh,
   },
   loginBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80 * vw,
-    height: 20 * vw,
+    width: 90 * vw,
+    height: 15 * vw,
     marginTop: 'auto',
     borderRadius: (30 * vw) / 5,
     backgroundColor: 'white',
+    borderWidth: 0.5 * vw,
+    borderColor: '#C44242',
+    elevation: 3,
   },
   loginBtnText: {
-    color: '#07AC7A',
+    color: '#C44242',
     fontSize: 3 * vh,
   },
   registerBtnText: {
-    color: '#07AC7A',
+    color: '#C44242',
     fontSize: 3 * vh,
   },
   registerBtn: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 80 * vw,
-    height: 20 * vw,
+    width: 90 * vw,
+    height: 15 * vw,
     borderRadius: (30 * vw) / 5,
     backgroundColor: 'white',
     marginTop: 1 * vh,
-    marginBottom: 7 * vh,
+    marginBottom: 10 * vh,
+    borderWidth: 0.5 * vw,
+    borderColor: '#C44242',
+    elevation: 3,
   },
 });

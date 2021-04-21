@@ -53,7 +53,7 @@ export function Landmarks() {
             backgroundColor: '#C44242',
             height: 10 * vh,
           },
-          title: 'Опътвания',
+          title: 'Упътвания',
           headerTitleStyle: {
             color: 'white',
             fontSize: 30,

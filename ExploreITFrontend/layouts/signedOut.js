@@ -23,7 +23,7 @@ export const SignedOutStack = () => {
         component={Login}
         options={{
           headerStyle: {
-            backgroundColor: '#97D8C4',
+            backgroundColor: '#C44242',
             height: 10 * vh,
           },
           title: 'Влезни',
@@ -40,7 +40,7 @@ export const SignedOutStack = () => {
         component={SignUp}
         options={{
           headerStyle: {
-            backgroundColor: '#97D8C4',
+            backgroundColor: '#C44242',
             height: 10 * vh,
           },
           title: 'Регистрирай се',

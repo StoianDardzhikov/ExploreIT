@@ -42,37 +42,14 @@ export const LandmarkPage = ({route, navigation}) => {
     setIsLoading(false);
   }, []);
 
-  function ratingCompleted(rating) {
-    setUserRating(rating);
-  }
-
-  const sendRating = async () => {
-    let accessToken = await AsyncStorage.getItem('@ACCESS_TOKEN');
-    let response = await fetch('https://exploreit.foema.com/landmarks/rate', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + accessToken,
-        Host: 'exploreit.foema.com',
-      },
-      body: JSON.stringify({
-        landmarkId: item.id,
-        ratingValue: userRating,
-      }),
-    });
-    let json = await response.json();
-  };
-
   const arrayBufferToBase64 = buffer => {
     return base64.encodeFromByteArray(new Uint8Array(buffer));
   };
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading action="Зареждаме забележителността..." />;
   }
 
-  console.log(overallRating);
   return (
     <View style={styles.pageContainer}>
       <View style={styles.imgContainer}>
@@ -85,55 +62,33 @@ export const LandmarkPage = ({route, navigation}) => {
           }}
         />
       </View>
-      {/*<View style={styles.ratingContainer}>
-        <AirbnbRating
-          type="star"
-          ratingCount={5}
-          reviews={['Много зле', 'Зле', 'Добре', 'Много добре', 'Отлично']}
-          imageSize={60}
-          showRating
-          onFinishRating={ratingCompleted}
-        />
-        <TouchableOpacity onPress={sendRating} style={styles.ratingButton}>
-          <Text style={styles.ratingText}>ОЦЕНИ</Text>
-        </TouchableOpacity>
-      </View>*/}
       <View style={styles.ratingAndNavigationContainer}>
         <Text style={styles.overallRating}>{overallRating}</Text>
         <View style={styles.ratingColumnContainer}>
           <Rating
             ratingCount={5}
             type="custom"
-            startingValue={overallRating}
+            startingValue={parseFloat(overallRating)}
             imageSize={24}
             ratingBackgroundColor="lightgray"
             tintColor="white"
             readonly={true}
           />
-          <Text style={styles.ratingsCount}>Оценки 1</Text>
+          <Text style={styles.ratingsCount}>
+            {landmark.ratingsCount} oценки
+          </Text>
         </View>
         <TouchableOpacity
           style={styles.directionsButton}
           onPress={() =>
-            navigation.navigate('LandmarkOnMap', {landmark: item})
+            navigation.navigate('LandmarkOnMap', {landmark: landmark})
           }>
           <Icon name="directions" size={6 * vh} style={styles.directionsIcon} />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.pageContainer}>
-        <Text style={styles.pageText}>{item.name}</Text>
-        <Text style={styles.landmarkInfo}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum
-          autem corrupti quod, molestias sit modi rerum ipsam praesentium? Rerum
-          accusamus voluptates suscipit molestiae consequuntur laborum nulla
-          dicta dolores tenetur.Lorem ipsum dolor sit amet, consectetur
-          adipisicing elit. Ducimus cum autem corrupti quod, molestias sit modi
-          rerum ipsam praesentium? Rerum accusamus voluptates suscipit molestiae
-          consequuntur laborum nulla dicta dolores tenetur.Lorem ipsum dolor sit
-          amet, consectetur adipisicing elit. Ducimus cum autem corrupti quod,
-          molestias sit modi rerum ipsam praesentium? Rerum accusamus voluptates
-          suscipit molestiae consequuntur laborum nulla dicta dolores tenetur.
-        </Text>
+      <ScrollView style={styles.pageInfoContainer}>
+        <Text style={styles.pageText}>{landmark.name}</Text>
+        <Text style={styles.landmarkInfo}>{landmark.description}</Text>
       </ScrollView>
     </View>
   );
@@ -143,6 +98,12 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     backgroundColor: '#E8E8E8',
+  },
+  pageInfoContainer: {
+    flex: 1,
+    backgroundColor: '#E8E8E8',
+    paddingLeft: 2 * vh,
+    paddingRight: 2 * vh,
   },
   imgContainer: {
     backgroundColor: 'white',
@@ -190,22 +151,4 @@ const styles = StyleSheet.create({
   directionsIcon: {
     color: '#C44242',
   },
-  /*rating: {
-    padding: 1 * vh,
-  },
-  ratingButton: {
-    height: 3.5 * vh,
-    width: '40%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F0C30E',
-    marginBottom: 2 * vh,
-    marginTop: 1.5 * vh,
-    borderRadius: 2 * vh,
-  },
-  ratingText: {
-    fontSize: 17,
-    color: 'white',
-    fontWeight: 'bold',
-  },*/
 });

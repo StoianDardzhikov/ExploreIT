@@ -25,49 +25,90 @@ var {vw, vh, vmin, vmax} = require('react-native-viewport-units');
 export const Login = ({navigation}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const {signIn} = React.useContext(AuthContext);
 
+  const checkValidUsername = username => {
+    if (!username.value) {
+      setUsernameError('Въведете име!');
+      return false;
+    } else {
+      setUsernameError(' ');
+      return true;
+    }
+  };
+
+  const checkValidPassword = password => {
+    if (!password.value) {
+      setPasswordError('Въведете парола!');
+      return false;
+    } else {
+      setPasswordError(' ');
+      return true;
+    }
+  };
+
+  const checkMatchingCredentials = status => {
+    if (status === 450) {
+      console.log('invalid credentials');
+      setPasswordError('Невалидни данни!');
+    } else setPasswordError(' ');
+  };
+
   return (
     <View style={styles.container}>
-      <ImageBackground
+      {/*<ImageBackground
         source={require('../../android/resources/backgrounds/background.png')}
-        style={styles.backgroundImage}>
-        <View style={styles.formContainer}>
-          <View style={styles.iconContainer}>
-            <Icon style={styles.userIcon} name="user" size={50} color="#000" />
-          </View>
-          <View style={styles.textInputContainer}>
-            <Icon name="envelope" size={20} color="#000" />
-            <TextInput
-              placeholder="e-поща..."
-              placeholderTextColor="gray"
-              style={styles.textInput}
-              onChangeText={username => {
-                setUsername({value: username});
-              }}></TextInput>
-          </View>
-          <View style={styles.textInputContainer}>
-            <Icon name="key" size={20} color="#000" />
-            <TextInput
-              placeholder="парола..."
-              placeholderTextColor="gray"
-              secureTextEntry={true}
-              style={styles.textInput}
-              onChangeText={password => {
-                setPassword({value: password});
-              }}
-            />
-          </View>
-          <TouchableOpacity
-            style={styles.loginBtn}
-            onPress={() => {
-              signIn({username, password});
-            }}>
-            <Text style={styles.loginBtnText}>Влез</Text>
-          </TouchableOpacity>
+        style={styles.backgroundImage}>*/}
+      <View style={styles.formContainer}>
+        <View style={styles.iconContainer}>
+          <Icon style={styles.userIcon} name="user" size={50} color="#000" />
         </View>
-      </ImageBackground>
+        <View style={styles.textInputContainer}>
+          <Icon name="user" size={20} color="#000" />
+          <TextInput
+            placeholder="име..."
+            placeholderTextColor="gray"
+            style={styles.textInput}
+            onChangeText={username => {
+              setUsername({value: username});
+            }}></TextInput>
+        </View>
+        <View style={styles.errorWrapper}>
+          <Text style={styles.errorText}>{usernameError}</Text>
+        </View>
+        <View style={styles.textInputContainer}>
+          <Icon name="key" size={20} color="#000" />
+          <TextInput
+            placeholder="парола..."
+            placeholderTextColor="gray"
+            secureTextEntry={true}
+            style={styles.textInput}
+            onChangeText={password => {
+              setPassword({value: password});
+            }}
+          />
+        </View>
+        <View style={styles.errorWrapper}>
+          <Text style={styles.errorText}>{passwordError}</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.loginBtn}
+          onPress={async () => {
+            let validUsername = checkValidUsername(username);
+            let validPassword = checkValidPassword(password);
+            if (validUsername && validPassword) {
+              let status = await signIn({username, password});
+              console.log(status);
+              checkMatchingCredentials(status);
+            }
+          }}>
+          <Text style={styles.loginBtnText}>Влез</Text>
+        </TouchableOpacity>
+      </View>
+      {/*</ImageBackground>*/}
     </View>
   );
 };
@@ -75,6 +116,9 @@ export const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#E5CFCF',
   },
   formContainer: {
     position: 'relative',
@@ -131,10 +175,17 @@ const styles = StyleSheet.create({
     height: 17 * vw,
     marginTop: 4 * vh,
     borderRadius: (30 * vw) / 2,
-    backgroundColor: '#97D8C4',
+    backgroundColor: '#C44242',
   },
   loginBtnText: {
     color: 'white',
     fontSize: 3 * vh,
+  },
+  errorWrapper: {
+    width: 70 * vw,
+  },
+  errorText: {
+    fontSize: 1.3 * vh,
+    color: 'red',
   },
 });
